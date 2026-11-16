@@ -10,4 +10,8 @@
 
   <suppress checks="FileLength"
     files="VideoDetailFragment.java"/>
+
+  <!-- Personal build: the personal filter package keeps its own style -->
+  <suppress checks=".*"
+    files="[\\/]personal[\\/]"/>
 </suppressions>

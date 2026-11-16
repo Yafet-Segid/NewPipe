@@ -26,8 +26,8 @@ import org.schabi.newpipe.local.feed.service.FeedEventManager.Event.ErrorResultE
 import org.schabi.newpipe.local.feed.service.FeedEventManager.Event.IdleEvent
 import org.schabi.newpipe.local.feed.service.FeedEventManager.Event.ProgressEvent
 import org.schabi.newpipe.local.feed.service.FeedEventManager.Event.SuccessResultEvent
-import org.schabi.newpipe.util.DEFAULT_THROTTLE_TIMEOUT
 import org.schabi.newpipe.personal.PersonalFilter
+import org.schabi.newpipe.util.DEFAULT_THROTTLE_TIMEOUT
 
 class FeedViewModel(
     private val application: Application,
