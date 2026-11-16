@@ -51,6 +51,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.evernote.android.state.State;
 
 import org.schabi.newpipe.R;
+import org.schabi.newpipe.personal.ContentFilter;
 import org.schabi.newpipe.databinding.FragmentSearchBinding;
 import org.schabi.newpipe.error.ErrorInfo;
 import org.schabi.newpipe.error.ErrorUtil;
@@ -858,6 +859,12 @@ public class SearchFragment extends BaseListFragment<SearchInfo, ListExtractor.I
             return;
         }
 
+        // Personal filter: blocked searches don't run
+        if (ContentFilter.isBlockedSearch(theSearchString)) {
+            showTextError(ContentFilter.BLOCKED_MESSAGE);
+            return;
+        }
+
         // Check if theSearchString is a URL which can be opened by NewPipe directly
         // and open it if possible.
         try {
@@ -1026,7 +1033,14 @@ public class SearchFragment extends BaseListFragment<SearchInfo, ListExtractor.I
     // Suggestion Results
     //////////////////////////////////////////////////////////////////////////*/
 
-    public void handleSuggestions(@NonNull final List<SuggestionItem> suggestions) {
+    public void handleSuggestions(@NonNull final List<SuggestionItem> unfilteredSuggestions) {
+        // Personal filter: hide blocked search suggestions
+        final List<SuggestionItem> suggestions = new ArrayList<>();
+        for (final SuggestionItem item : unfilteredSuggestions) {
+            if (!ContentFilter.isBlockedSearch(item.query)) {
+                suggestions.add(item);
+            }
+        }
         if (DEBUG) {
             Log.d(TAG, "handleSuggestions() called with: suggestions = [" + suggestions + "]");
         }

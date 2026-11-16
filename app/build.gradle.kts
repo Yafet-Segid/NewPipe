@@ -76,6 +76,8 @@ configure<ApplicationExtension> {
                 applicationIdSuffix = suffix
                 resValue("string", "app_name", "NewPipe $suffix")
             }
+            // Personal build: own app name
+            System.getProperty("personalAppName")?.let { resValue("string", "app_name", it) }
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(

@@ -27,6 +27,7 @@ import org.schabi.newpipe.local.feed.service.FeedEventManager.Event.IdleEvent
 import org.schabi.newpipe.local.feed.service.FeedEventManager.Event.ProgressEvent
 import org.schabi.newpipe.local.feed.service.FeedEventManager.Event.SuccessResultEvent
 import org.schabi.newpipe.util.DEFAULT_THROTTLE_TIMEOUT
+import org.schabi.newpipe.personal.PersonalFilter
 
 class FeedViewModel(
     private val application: Application,
@@ -93,9 +94,9 @@ class FeedViewModel(
         .subscribe { (event, listFromDB, notLoadedCount, oldestUpdate) ->
             mutableStateLiveData.postValue(
                 when (event) {
-                    is IdleEvent -> FeedState.LoadedState(listFromDB.map { e -> StreamItem(e) }, oldestUpdate, notLoadedCount, listOf())
+                    is IdleEvent -> FeedState.LoadedState(listFromDB.filterNot { PersonalFilter.isBlockedFeedItem(it.stream) }.map { e -> StreamItem(e) }, oldestUpdate, notLoadedCount, listOf())
                     is ProgressEvent -> FeedState.ProgressState(event.currentProgress, event.maxProgress, event.progressMessage)
-                    is SuccessResultEvent -> FeedState.LoadedState(listFromDB.map { e -> StreamItem(e) }, oldestUpdate, notLoadedCount, event.itemsErrors)
+                    is SuccessResultEvent -> FeedState.LoadedState(listFromDB.filterNot { PersonalFilter.isBlockedFeedItem(it.stream) }.map { e -> StreamItem(e) }, oldestUpdate, notLoadedCount, event.itemsErrors)
                     is ErrorResultEvent -> FeedState.ErrorState(event.error)
                 }
             )

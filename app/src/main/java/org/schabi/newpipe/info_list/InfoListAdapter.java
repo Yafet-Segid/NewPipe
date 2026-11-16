@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.schabi.newpipe.databinding.PignateFooterBinding;
 import org.schabi.newpipe.extractor.InfoItem;
+import org.schabi.newpipe.personal.PersonalFilter;
 import org.schabi.newpipe.extractor.channel.ChannelInfoItem;
 import org.schabi.newpipe.extractor.comments.CommentsInfoItem;
 import org.schabi.newpipe.extractor.playlist.PlaylistInfoItem;
@@ -123,7 +124,9 @@ public class InfoListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.itemMode = itemViewMode;
     }
 
-    public void addInfoItemList(@Nullable final List<? extends InfoItem> data) {
+    public void addInfoItemList(@Nullable final List<? extends InfoItem> unfilteredData) {
+        // Personal filter: hide news, politics, Shorts, blocked channels...
+        final List<? extends InfoItem> data = PersonalFilter.filterItems(unfilteredData);
         if (data == null) {
             return;
         }

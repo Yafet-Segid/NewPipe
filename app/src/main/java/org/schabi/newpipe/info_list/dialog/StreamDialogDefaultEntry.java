@@ -7,6 +7,7 @@ import static org.schabi.newpipe.util.SparseItemUtil.fetchUploaderUrlIfSparse;
 
 import android.content.Context;
 import android.net.Uri;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
@@ -20,6 +21,7 @@ import org.schabi.newpipe.error.UserAction;
 import org.schabi.newpipe.local.dialog.PlaylistAppendDialog;
 import org.schabi.newpipe.local.dialog.PlaylistDialog;
 import org.schabi.newpipe.local.history.HistoryRecordManager;
+import org.schabi.newpipe.personal.BlockedChannels;
 import org.schabi.newpipe.util.NavigationHelper;
 import org.schabi.newpipe.util.external_communication.KoreUtils;
 import org.schabi.newpipe.util.external_communication.ShareUtils;
@@ -45,6 +47,16 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
  * </p>
  */
 public enum StreamDialogDefaultEntry {
+    /**
+     * Personal build: blocks the video's channel permanently.
+     */
+    BLOCK_CHANNEL(R.string.personal_block_channel, (fragment, item) -> {
+        BlockedChannels.add(fragment.requireContext(), item.getUploaderUrl(),
+                item.getUploaderName());
+        Toast.makeText(fragment.requireContext(), R.string.personal_channel_blocked,
+                Toast.LENGTH_SHORT).show();
+    }),
+
     SHOW_CHANNEL_DETAILS(R.string.show_channel_details, (fragment, item) ->
             fetchUploaderUrlIfSparse(fragment.requireContext(), item.getServiceId(), item.getUrl(),
                     item.getUploaderUrl(), url -> openChannelFragment(fragment, item, url))

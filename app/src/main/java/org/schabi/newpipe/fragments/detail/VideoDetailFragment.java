@@ -65,6 +65,8 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.schabi.newpipe.App;
 import org.schabi.newpipe.R;
+import org.schabi.newpipe.personal.ContentFilter;
+import org.schabi.newpipe.personal.PersonalFilter;
 import org.schabi.newpipe.database.stream.model.StreamEntity;
 import org.schabi.newpipe.databinding.FragmentVideoDetailBinding;
 import org.schabi.newpipe.download.DownloadDialog;
@@ -1529,6 +1531,14 @@ public final class VideoDetailFragment
 
     @Override
     public void handleResult(@NonNull final StreamInfo info) {
+        // Personal filter: don't play blocked videos (e.g. opened from a link or shared)
+        if (PersonalFilter.isBlockedVideo(info)) {
+            Toast.makeText(activity, ContentFilter.BLOCKED_MESSAGE, Toast.LENGTH_SHORT).show();
+            playerHolder.stopService();
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            return;
+        }
+
         super.handleResult(info);
 
         currentInfo = info;

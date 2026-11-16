@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Personal build: block a channel for good (there is no unblock) -->
+    <string name="personal_block_channel" translatable="false">Block the channel</string>
+    <string name="personal_channel_blocked" translatable="false">Channel blocked. It won\'t show again.</string>
+</resources>

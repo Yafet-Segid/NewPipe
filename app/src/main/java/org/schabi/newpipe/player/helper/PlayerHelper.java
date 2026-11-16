@@ -32,6 +32,7 @@ import com.google.android.exoplayer2.ui.CaptionStyleCompat;
 
 import org.schabi.newpipe.R;
 import org.schabi.newpipe.extractor.InfoItem;
+import org.schabi.newpipe.personal.PersonalFilter;
 import org.schabi.newpipe.extractor.stream.StreamInfo;
 import org.schabi.newpipe.extractor.stream.StreamInfoItem;
 import org.schabi.newpipe.extractor.stream.SubtitlesStream;
@@ -181,7 +182,8 @@ public final class PlayerHelper {
                 .map(PlayQueueItem::getUrl)
                 .collect(Collectors.toUnmodifiableSet());
 
-        final List<InfoItem> relatedItems = info.getRelatedItems();
+        // Personal filter: never autoplay a blocked video
+        final List<InfoItem> relatedItems = PersonalFilter.filterItems(info.getRelatedItems());
         if (Utils.isNullOrEmpty(relatedItems)) {
             return null;
         }
