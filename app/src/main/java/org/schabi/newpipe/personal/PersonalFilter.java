@@ -146,7 +146,7 @@ public final class PersonalFilter {
             return null;
         }
         if (description instanceof Description) {
-            return ((Description) description).getContent();
+            return ((Description) description).content();
         }
         return description.toString();
     }
